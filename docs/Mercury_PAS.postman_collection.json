@@ -1,0 +1,532 @@
+{
+	"info": {
+		"_postman_id": "mercury-pas-collection",
+		"name": "Mercury PAS API",
+		"description": "Auto Insurance Policy Administration System - Complete API Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Doe\",\n  \"email\": \"jane.doe@example.com\",\n  \"password\": \"Customer@123\",\n  \"role\": \"CUSTOMER\",\n  \"dob\": \"1995-06-15\",\n  \"licenseNumber\": \"D1234567890\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/register",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "register"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"jwtToken\", jsonData.accessToken);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@mercury.com\",\n  \"password\": \"Admin@123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "login"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"jane@example.com\",\n  \"newPassword\": \"NewPass@123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/reset-password",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "reset-password"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get Current User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/me",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "users", "me"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Doe\",\n  \"email\": \"jane@example.com\",\n  \"dob\": \"1995-06-15\",\n  \"licenseNumber\": \"D123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/update-profile",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "users", "update-profile"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users (ADMIN)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/all",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "users", "all"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User (ADMIN)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "users", "1"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Quotes",
+			"item": [
+				{
+					"name": "Generate Quote",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"customerId\": 3,\n  \"make\": \"Toyota\",\n  \"model\": \"Camry\",\n  \"year\": 2012,\n  \"vin\": \"VIN123\",\n  \"driverAge\": 24\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/quotes/generate",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "quotes", "generate"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save Quote",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"customerId\": 3,\n  \"vehicleId\": 5,\n  \"coverageDetails\": \"Standard\",\n  \"premiumAmount\": 3450.00\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/quotes/save",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "quotes", "save"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Quote by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/quotes/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "quotes", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Quotes by Customer",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/quotes/customer/3",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "quotes", "customer", "3"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Convert Quote to Policy (AGENT/ADMIN)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/quotes/convert-to-policy/1?agentId=2",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "quotes", "convert-to-policy", "1"],
+							"query": [
+								{
+									"key": "agentId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Policies",
+			"item": [
+				{
+					"name": "Create Policy (AGENT/ADMIN)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"quoteId\": 1,\n  \"agentId\": 2,\n  \"startDate\": \"2025-01-01\",\n  \"endDate\": \"2026-01-01\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/policies/create",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "policies", "create"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Policy by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/policies/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "policies", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Policies by Customer",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/policies/customer/3",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "policies", "customer", "3"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Policies by Agent (AGENT/ADMIN)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/policies/agent/2",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "policies", "agent", "2"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Policy (AGENT/ADMIN)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"quoteId\": 1,\n  \"agentId\": 2,\n  \"startDate\": \"2025-02-01\",\n  \"endDate\": \"2026-02-01\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/policies/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "policies", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Policy (AGENT/ADMIN)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/policies/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "policies", "1"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Claims",
+			"item": [
+				{
+					"name": "File Claim",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"policyId\": 1,\n  \"customerId\": 3,\n  \"description\": \"Rear bumper damage\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/claims/file",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "claims", "file"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Claim by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/claims/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "claims", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Claims by Policy",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/claims/policy/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "claims", "policy", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Document (AGENT/ADMIN)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"path\": \"C:/uploads/claim1/photo1.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/claims/upload-document/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "claims", "upload-document", "1"]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "jwtToken",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
+
